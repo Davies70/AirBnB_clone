@@ -13,7 +13,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
 
-        """ initializing the class """
+        """ initializing the class with constructor """
 
         self.updated_at = datetime.today()
         self.id = str(uuid4())
@@ -25,9 +25,9 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key == "created_at" or key == "updated_at":
-                        self.key = datetime.strptime(value, timeformat)
+                        self.__dict__[key] = datetime.strptime(value, timeformat)
                     else:
-                        self.key = value
+                        self.__dict__[key] = value
 
     def __str__(self):
         """ defining string representation of class """
