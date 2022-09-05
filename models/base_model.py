@@ -24,11 +24,10 @@ class BaseModel:
 
         if len(kwargs) != 0:
             for key, value in kwargs.items():
-                if key != "__class__":
-                    if key == "created_at" or key == "updated_at":
-                        self.__dict__[key] = datetime.strptime(value, tformat)
-                    else:
-                        self.__dict__[key] = value
+                if key == "created_at" or key == "updated_at":
+                    self.__dict__[key] = datetime.strptime(value, tformat)
+                else:
+                    self.__dict__[key] = value
         else:
             models.storage.new(self)
 
