@@ -20,16 +20,19 @@ class BaseModel:
         self.id = str(uuid4())
         self.created_at = datetime.today()
 
-        tformat = "%Y-%m-%dT%H:%M:%S.%f"
-
-        if len(kwargs) != 0:
+        if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    self.__dict__[key] = datetime.strptime(value, tformat)
-                else:
-                    self.__dict__[key] = value
-        else:
-            models.storage.new(self)
+                if key == "created_at":
+                    date = value[0:10] + " " + value[11:]
+                    self.created_at = datetime.strptime(
+                        date, '%Y-%m-%d %H:%M:%S.%f')
+                elif key == "updated_at":
+                    date = value[0:10] + " " + value[11:]
+                    self.updated_at = datetime.strptime(
+                        date, "%Y-%m-%d %H:%M:%S.%f")
+                elif key != "__class__":
+                    setattr(self, key, value)
+        models.storage.new(self)
 
     def __str__(self):
         """ defining string representation of class """
